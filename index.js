@@ -3,7 +3,7 @@ module.exports = function detectCSV(chunk, opts) {
   opts = opts || {}
   if(Buffer.isBuffer(chunk)) chunk = chunk + ''
   var delimiters = opts.delimiters || [',', ';', '\t', '|']
-  var newlines = opts.newlines || ['\n', '\r']
+  var newlines = opts.newlines || ['\n', '\r', '\r\n']
   
   var lines = chunk.split(/[\n\r]+/g)
   
@@ -31,7 +31,7 @@ function determineMost(chunk, items) {
     if(chunk[i] === '"') ignoreString = !ignoreString
     else if(!ignoreString && chunk[i] in itemCount) {
       currValue = ++itemCount[chunk[i]]
-      if(currValue > maxValue) {
+      if(currValue >= maxValue) {
         maxValue = currValue
         maxChar = chunk[i]
       }
